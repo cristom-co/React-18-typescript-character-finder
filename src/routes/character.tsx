@@ -1,0 +1,78 @@
+import { useEffect } from "react";
+import { useQuery } from '@apollo/client';
+import { useParams } from 'react-router-dom';
+
+import { DETAIL_CHARACTER } from '../graphql/queries';
+import { Character as typeCharacter } from "../@types/all";
+
+export default function Character() {
+  const { characterId } = useParams<{ characterId: string }>();
+
+  const { loading, data, refetch } = useQuery<{ character: typeCharacter }>(DETAIL_CHARACTER,{
+    variables: { characterId }
+  });
+
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
+
+  {loading && <p>Loading...</p>}
+
+  return (
+    <div className="px-16 flex flex-col ">
+      <div className="pb-5 pt-5">
+        <div className="relative w-24">
+          <img
+            className="rounded-full w-24 mb-3"
+            src={data?.character.image}
+            alt={data?.character.name}
+          />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-9 h-9 absolute bottom-0 right-0 rounded-full bg-white p-1"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
+            />
+          </svg>
+        </div>
+        <h1 className="text-2xl font-medium">{data?.character.name|| "none"}</h1>
+      </div>
+      <div className="">
+        <div className="flex flex-col border-b-2 py-3 mb-3">
+          <span className="font-medium">Specie</span>
+          <span className="font-extralight">{data?.character.species|| "none"}</span>
+        </div>
+
+        <div className="flex flex-col border-b-2 py-3 mb-3">
+          <span className="font-medium">Status</span>
+          <span className="font-extralight">{data?.character.status|| "none"}</span>
+        </div>
+
+        <div className="flex flex-col border-b-2 py-3 mb-3">
+          <span className="font-medium">type</span>
+          <span className="font-extralight">{data?.character.type || "none"}</span>
+        </div>
+
+
+        <div className="flex flex-col border-b-2 py-3 mb-3">
+          <span className="font-medium">gender</span>
+          <span className="font-extralight">{data?.character.gender|| "none" }</span>
+        </div>
+      </div>
+      <div>
+        comments...
+        {/* <textarea></textarea>
+        <button> add comment</button> */}
+      </div>
+      {/* <div>list comments</div> */}
+    </div>
+  );
+}
+
