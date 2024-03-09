@@ -6,6 +6,7 @@ export interface Character {
     species: string
     type: string
     gender: string
+    starred: boolean
    }
 
 export interface responseSearch {
@@ -13,21 +14,11 @@ export interface responseSearch {
 }
 
 export type RootContextType = {
-    starred: Character[];
+    listCharacters: Character[];
     specie: String;
-    updateStarred: (characters: Character[]) => void;
+    search: string;
+    updateCharacters: (characters: Character[]) => void;
     updateSpecie: (specie: String) => void;
+    updateSearch: (search: string) => void;
+    addStarred: (id: string) => void;
 };
-
-
-export interface ITodo {
-    id: number;
-    title: string;
-    description: string;
-    status: boolean;
-  }
-  export type TodoContextType = {
-    todos: ITodo[];
-    saveTodo: (todo: ITodo) => void;
-    updateTodo: (id: number) => void;
-  };

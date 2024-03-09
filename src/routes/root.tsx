@@ -1,6 +1,6 @@
 
-import React, {  } from "react";
-import { Outlet, NavLink } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Outlet } from "react-router-dom";
 
 import { DocumentNode, useLazyQuery } from '@apollo/client';
 import { SEARCH_CHARACTERS } from '../graphql/queries';
@@ -11,20 +11,26 @@ import { RootContextType, } from '../@types/all';
 
 
 import Dropdown from "../components/Dropdown";
+import ListCharacters from "../components/ListCharacters";
 
 export default function Root() {
-  const [searchTerm, setSearchTerm] = React.useState('');
   const [searchCharacters, { loading, data }] = useLazyQuery<{ searchResults: responseSearch }>(
     SEARCH_CHARACTERS as DocumentNode
   );
   
-  const { specie } = React.useContext(RootContext) as RootContextType;
+  const { specie, listCharacters, updateCharacters, search, updateSearch , addStarred} = React.useContext(RootContext) as RootContextType;
 
   const handleSearch = () => {
     searchCharacters({
-      variables: { searchTerm, specie },
+      variables: { searchTerm: search, specie },
     });
   };
+
+  useEffect(() => {
+    if(!loading && data){
+      updateCharacters(data.searchResults.results)
+    }
+  }, [loading])
 
     return (
       <>
@@ -35,8 +41,8 @@ export default function Root() {
               <div className="relative flex rounded-lg mb-5">
                 <input
                   type="text"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
+                  value={search}
+                  onChange={(e) => updateSearch(e.target.value)}
                   onBlur={handleSearch}
                   className="ps-11  w-full border-none rounded-s-lg text-sm bg-slate-100"
                   placeholder="Input search"
@@ -58,61 +64,42 @@ export default function Root() {
                     <path d="m21 21-4.3-4.3" />
                   </svg>
                 </div>
-                <Dropdown/>
-                
+                <Dropdown />
               </div>
             </div>
 
             {loading && <p>Loading...</p>}
 
-            {/* list favorites */}
-
-            {/* list others */}
-            {data && data.searchResults.results && (
+            {listCharacters.filter((item) => item.starred).length > 0 && (
+              <h2>
+                Starred characters (
+                {listCharacters.filter((item) => item.starred).length})
+              </h2>
+            )}
+            {listCharacters && (
               <nav>
                 <ul className="flex flex-col gap-5">
-                  {data.searchResults.results.map((result) => (
-                    <li key={result.id} className=" flex border-b-2 pb-3">
-                      <div className="grow">
-                        <NavLink to={`character/${result.id}`}>
-                          <div className="flex flex-row gap-4">
-                            <img
-                              className=" grow-0 rounded-full self-center"
-                              src={result.image}
-                              alt={result.name}
-                              style={{ width: "40px", height: "40px" }}
-                            />
-                            <div className=" grow flex flex-col">
-                              <span className="font-medium">
-                                {result.name.length > 16
-                                  ? result.name.substring(0, 15) + "..."
-                                  : result.name}
-                              </span>
-                              <span className="font-extralight">
-                                {result.species}
-                              </span>
-                            </div>
-                          </div>
-                        </NavLink>
-                      </div>
-                      <button className="grow-0 rounded-full p-3 bg-white">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth={1.5}
-                          stroke="currentColor"
-                          className="w-6 h-6"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
-                          />
-                        </svg>
-                      </button>
-                    </li>
-                  ))}
+                  {listCharacters
+                    .filter((item) => item.starred)
+                    .map((result) => (
+                      <ListCharacters result={result} addStarred={addStarred} />
+                    ))}
+                </ul>
+              </nav>
+            )}
+
+            <h2>
+              Characters ({listCharacters.filter((item) => !item.starred).length})
+            </h2>
+
+            {listCharacters && (
+              <nav>
+                <ul className="flex flex-col gap-5">
+                  {listCharacters
+                    .filter((item) => !item.starred)
+                    .map((result) => (
+                      <ListCharacters result={result} addStarred={addStarred} />
+                    ))}
                 </ul>
               </nav>
             )}

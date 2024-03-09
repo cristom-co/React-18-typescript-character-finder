@@ -1,9 +1,12 @@
-import { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useQuery } from '@apollo/client';
 import { useParams } from 'react-router-dom';
 
 import { DETAIL_CHARACTER } from '../graphql/queries';
 import { Character as typeCharacter } from "../@types/all";
+
+import { RootContext } from '../context/rootContext';
+import { RootContextType, } from '../@types/all';
 
 export default function Character() {
   const { characterId } = useParams<{ characterId: string }>();
@@ -12,9 +15,19 @@ export default function Character() {
     variables: { characterId }
   });
 
+  const { listCharacters, addStarred} = React.useContext(RootContext) as RootContextType;
+
+  const [starred, setStarred] = useState(false)
+
   useEffect(() => {
     refetch();
   }, [refetch]);
+
+  const clickStarred = () => {
+    setStarred(!starred)
+    if(data)
+      addStarred(data?.character.id);
+  }
 
   {loading && <p>Loading...</p>}
 
@@ -28,11 +41,12 @@ export default function Character() {
             alt={data?.character.name}
           />
           <svg
+            onClick={clickStarred}
             xmlns="http://www.w3.org/2000/svg"
-            fill="none"
+            fill={listCharacters.find(item => item.id === data?.character.id)?.starred ? "green" : "none"}
             viewBox="0 0 24 24"
             strokeWidth={1.5}
-            stroke="currentColor"
+            stroke={listCharacters.find(item => item.id === data?.character.id)?.starred ? "green" : "grey"}
             className="w-9 h-9 absolute bottom-0 right-0 rounded-full bg-white p-1"
           >
             <path
@@ -42,28 +56,37 @@ export default function Character() {
             />
           </svg>
         </div>
-        <h1 className="text-2xl font-medium">{data?.character.name|| "none"}</h1>
+        <h1 className="text-2xl font-medium">
+          {data?.character.name || "none"}
+        </h1>
       </div>
       <div className="">
         <div className="flex flex-col border-b-2 py-3 mb-3">
           <span className="font-medium">Specie</span>
-          <span className="font-extralight">{data?.character.species|| "none"}</span>
+          <span className="font-extralight">
+            {data?.character.species || "none"}
+          </span>
         </div>
 
         <div className="flex flex-col border-b-2 py-3 mb-3">
           <span className="font-medium">Status</span>
-          <span className="font-extralight">{data?.character.status|| "none"}</span>
+          <span className="font-extralight">
+            {data?.character.status || "none"}
+          </span>
         </div>
 
         <div className="flex flex-col border-b-2 py-3 mb-3">
           <span className="font-medium">type</span>
-          <span className="font-extralight">{data?.character.type || "none"}</span>
+          <span className="font-extralight">
+            {data?.character.type || "none"}
+          </span>
         </div>
-
 
         <div className="flex flex-col border-b-2 py-3 mb-3">
           <span className="font-medium">gender</span>
-          <span className="font-extralight">{data?.character.gender|| "none" }</span>
+          <span className="font-extralight">
+            {data?.character.gender || "none"}
+          </span>
         </div>
       </div>
       <div>

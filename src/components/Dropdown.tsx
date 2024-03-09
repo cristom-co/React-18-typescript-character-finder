@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 
 import { RootContext } from "../context/rootContext";
 import { RootContextType, responseSearch } from "../@types/all";
@@ -14,20 +14,23 @@ const Dropdown = () => {
     setDropdownOpen(!isDropdownOpen);
   };
 
-  const { updateSpecie, specie } = useContext(RootContext) as RootContextType;
+  const { updateSpecie, specie, updateCharacters, search } = useContext(RootContext) as RootContextType;
 
-  const [searchCharacters, { loading, data }] = useLazyQuery<{ searchResults: responseSearch }>(
+  const [searchCharacters, { loading, data,  }] = useLazyQuery<{ searchResults: responseSearch }>(
     SEARCH_CHARACTERS as DocumentNode
   );
 
   const clickFilter = () => {
     searchCharacters({
-      variables: { searchTerm: "", specie },
+      variables: { searchTerm: search, specie },
     });
+    toggleDropdown();
   }
 
-    //TODO: SEND DATA TO CONTEXT
-    console.log(loading,data)
+  useEffect(()=>{
+    if(!loading && data)
+      updateCharacters(data?.searchResults.results);
+  },[loading])
 
   return (
     <div className="relative">
@@ -70,9 +73,8 @@ const Dropdown = () => {
                 </div>
             </div>
             <div className="div py-4">
-                <button className='w-full rounded-md p-2 bg-slate-400' onClick={clickFilter}>Filter</button>
+                <button className='w-full rounded-md p-2 bg-slate-400 text-white' onClick={clickFilter}>Filter</button>
             </div>
-            {/* {specie} */}
         </div>
       )}
     </div>
