@@ -47,7 +47,7 @@ export default function Character() {
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke={listCharacters.find(item => item.id === data?.character.id)?.starred ? "green" : "grey"}
-            className="w-9 h-9 absolute bottom-0 right-0 rounded-full bg-white p-1"
+            className="w-9 h-9 absolute bottom-0 right-0 rounded-full bg-white p-1 cursor-pointer"
           >
             <path
               strokeLinecap="round"

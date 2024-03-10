@@ -1,11 +1,7 @@
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext } from 'react';
 
 import { RootContext } from "../context/rootContext";
-import { RootContextType, responseSearch } from "../@types/all";
-
-import { SEARCH_CHARACTERS } from '../graphql/queries';
-import { DocumentNode, useLazyQuery } from '@apollo/client';
-
+import { RootContextType } from "../@types/all";
 
 const Dropdown = () => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
@@ -14,23 +10,14 @@ const Dropdown = () => {
     setDropdownOpen(!isDropdownOpen);
   };
 
-  const { updateSpecie, specie, updateCharacters, search } = useContext(RootContext) as RootContextType;
-
-  const [searchCharacters, { loading, data,  }] = useLazyQuery<{ searchResults: responseSearch }>(
-    SEARCH_CHARACTERS as DocumentNode
-  );
+  const { updateSpecie, specie, updateCharacterFilter, characterFilter, filterCharacters } = useContext(RootContext) as RootContextType;
 
   const clickFilter = () => {
-    searchCharacters({
-      variables: { searchTerm: search, specie },
-    });
-    toggleDropdown();
+    filterCharacters()
+    setTimeout(() => {
+      toggleDropdown();
+    }, 200);
   }
-
-  useEffect(()=>{
-    if(!loading && data)
-      updateCharacters(data?.searchResults.results);
-  },[loading])
 
   return (
     <div className="relative">
@@ -56,25 +43,72 @@ const Dropdown = () => {
 
       {isDropdownOpen && (
         <div className="absolute mt-2 right-0 w-80 p-4 bg-white border rounded-md shadow-lg">
-            <div>
-                <span>Character</span>
-                <div className='flex flex-row justify-between px-4 py-2 gap-2' >
-                    <button className='bg-slate-200 p-3 rounded-md w-1/3' onClick={() => null}>All</button>
-                    <button className='bg-slate-200 p-3 rounded-md w-1/3' onClick={() => null}>Starred</button>
-                    <button className='bg-slate-200 p-3 rounded-md w-1/3' onClick={() => null}>Others</button>
-                </div>
+          <div>
+            <span>Character</span>
+            <div className="flex flex-row justify-between px-4 py-2 gap-2">
+              <button
+                className={`p-3 rounded-md w-1/3 ${
+                  characterFilter == "" ? "bg-purple-500" : "bg-white"
+                }`}
+                onClick={() => updateCharacterFilter("")}
+              >
+                All
+              </button>
+              <button
+                className={`p-3 rounded-md w-1/3 ${
+                  characterFilter == "Starred" ? "bg-purple-500" : "bg-white"
+                }`}
+                onClick={() => updateCharacterFilter("Starred")}
+              >
+                Starred
+              </button>
+              <button
+                className={`p-3 rounded-md w-1/3 ${
+                  characterFilter == "Others" ? "bg-purple-500" : "bg-white"
+                }`}
+                onClick={() => updateCharacterFilter("Others")}
+              >
+                Others
+              </button>
             </div>
-            <div>
-                <span>Specie</span>
-                <div className='flex flex-row justify-between px-4 py-2 gap-2'>
-                    <button className='bg-slate-200 p-3 rounded-md w-1/3' onClick={() => updateSpecie("")}>All</button>
-                    <button className='bg-slate-200 p-3 rounded-md w-1/3' onClick={() => updateSpecie("Human")}>Human</button>
-                    <button className='bg-slate-200 p-3 rounded-md w-1/3' onClick={() => updateSpecie("Alien")}>Alien</button>
-                </div>
+          </div>
+          <div>
+            <span>Specie</span>
+            <div className="flex flex-row justify-between px-4 py-2 gap-2">
+              <button
+                className={`p-3 rounded-md w-1/3 ${
+                  specie == "" ? "bg-purple-500" : "bg-white"
+                }`}
+                onClick={() => updateSpecie("")}
+              >
+                All
+              </button>
+              <button
+                className={`p-3 rounded-md w-1/3 ${
+                  specie == "Human" ? "bg-purple-500" : "bg-white"
+                }`}
+                onClick={() => updateSpecie("Human")}
+              >
+                Human
+              </button>
+              <button
+                className={`p-3 rounded-md w-1/3 ${
+                  specie == "Alien" ? "bg-purple-500" : "bg-white"
+                }`}
+                onClick={() => updateSpecie("Alien")}
+              >
+                Alien
+              </button>
             </div>
-            <div className="div py-4">
-                <button className='w-full rounded-md p-2 bg-slate-400 text-white' onClick={clickFilter}>Filter</button>
-            </div>
+          </div>
+          <div className="div py-4">
+            <button
+              className="w-full rounded-md p-2 bg-slate-400 text-white"
+              onClick={clickFilter}
+            >
+              Filter
+            </button>
+          </div>
         </div>
       )}
     </div>

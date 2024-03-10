@@ -18,7 +18,7 @@ export default function Root() {
     SEARCH_CHARACTERS as DocumentNode
   );
   
-  const { specie, listCharacters, updateCharacters, search, updateSearch , addStarred} = React.useContext(RootContext) as RootContextType;
+  const { specie, listCharacters, updateCharacters, search, updateSearch , addStarred, listCharactersFilter} = React.useContext(RootContext) as RootContextType;
 
   const handleSearch = () => {
     searchCharacters({
@@ -88,9 +88,25 @@ export default function Root() {
               </nav>
             )}
 
-            <h2>
-              Characters ({listCharacters.filter((item) => !item.starred).length})
-            </h2>
+            {/* characters filter */}
+            {listCharactersFilter && (
+              <nav>
+                <ul className="flex flex-col gap-5">
+                  {listCharactersFilter
+                    .map((result) => (
+                      <ListCharacters result={result} addStarred={addStarred} />
+                    ))}
+                </ul>
+              </nav>
+            )}
+
+
+            {listCharacters.length > 0 && (
+              <h2>
+                Characters (
+                {listCharacters.filter((item) => !item.starred).length})
+              </h2>
+            )}
 
             {listCharacters && (
               <nav>
