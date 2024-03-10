@@ -16,6 +16,8 @@ const RootProvider: React.FC<{children: React.ReactNode}> = ({ children }) => {
   const [currentStatus, setCurrentStatus] = React.useState<string>("")
   const [currentGender, setCurrentGender] = React.useState<string>("")
 
+  const [originalListCharacters, setOriginalListCharacters] =  React.useState<Character[]>([]);
+
   const updateCharacters = (characters: Character[]) => {
     const idsStarred = listCharacters.filter(item => item.starred && !listStarred.includes(item.id)).map(item => item.id)
     const setStarred =  [...listStarred,...idsStarred];
@@ -76,63 +78,73 @@ const RootProvider: React.FC<{children: React.ReactNode}> = ({ children }) => {
 
   const filterCharacters = () => {
 
-    setListCharactersFilter(listCharacters.filter(item => {
-      let tmpCharacter, tmpSpecie, tmpStatus, tmpGender = false
-      switch (characterFilter) {
-        case 'Starred':
-          if(item.starred)
-            tmpCharacter = true
-          break;
-        case "Others":
-          if(!item.starred)
+    if(characterFilter == "" && specie == "" && currentStatus == "" && currentGender == ""){
+      setListCharactersFilter([]);
+      setListCharacters(originalListCharacters);
+    }else{
+      setOriginalListCharacters(listCharacters);
+      const filtered = listCharacters.filter(item => {
+        let tmpCharacter, tmpSpecie, tmpStatus, tmpGender = false
+        switch (characterFilter) {
+          case 'Starred':
+            if(item.starred)
+              tmpCharacter = true
+            break;
+          case "Others":
+            if(!item.starred)
+              tmpCharacter = true;
+            break;
+          default:
             tmpCharacter = true;
+            break;
+        }
+        switch (specie) {
+          case "Human":
+            if(item.species === "Human")
+              tmpSpecie = true
+          break
+          case "Alien":
+            if(item.species === "Alien")
+              tmpSpecie = true
           break;
-        default:
-          tmpCharacter = true;
-          break;
-      }
-      switch (specie) {
-        case "Human":
-          if(item.species === "Human")
+          default:
             tmpSpecie = true
-        break
-        case "Alien":
-          if(item.species === "Alien")
-            tmpSpecie = true
-        break;
-        default:
-          tmpSpecie = true
-        break;
-      }
-      switch (currentStatus) {
-        case "Alive":
-          if(item.status === "Alive")
-            tmpStatus = true
           break;
-        case "Dead":
-          if(item.status === "Dead")
-            tmpStatus = true
-          break;
-        default:
-          tmpStatus = true;
-          break;
-      }
-      switch (currentGender) {
-        case "Male":
-          if(item.gender === "Male")
+        }
+        switch (currentStatus) {
+          case "Alive":
+            if(item.status === "Alive")
+              tmpStatus = true
+            break;
+          case "Dead":
+            if(item.status === "Dead")
+              tmpStatus = true
+            break;
+          default:
+            tmpStatus = true;
+            break;
+        }
+        switch (currentGender) {
+          case "Male":
+            if(item.gender === "Male")
+              tmpGender = true
+            break;
+          case "Female":
+            if(item.gender === "Female")
+              tmpGender = true
+            break;
+          default:
             tmpGender = true
-          break;
-        case "Female":
-          if(item.gender === "Female")
-            tmpGender = true
-          break;
-        default:
-          tmpGender = true
-          break;
-      }
-
-      return tmpCharacter && tmpSpecie && tmpStatus && tmpGender
-    }));
+            break;
+        }
+  
+        return tmpCharacter && tmpSpecie && tmpStatus && tmpGender
+      });
+      setListCharactersFilter(filtered);
+  
+      const mapFiltered = filtered.map(item => item.id);
+      setListCharacters(listCharacters.filter(item => !mapFiltered.includes(item.id)));
+    }
   }
 
   const updateComments = (comment: string, id: string) => {

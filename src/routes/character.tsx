@@ -65,7 +65,7 @@ export default function Character() {
                 fill={
                   listCharacters.find((item) => item.id === data?.character.id)
                     ?.starred
-                    ? "green"
+                    ? "#63D838"
                     : "none"
                 }
                 viewBox="0 0 24 24"
@@ -73,7 +73,7 @@ export default function Character() {
                 stroke={
                   listCharacters.find((item) => item.id === data?.character.id)
                     ?.starred
-                    ? "green"
+                    ? "#63D838"
                     : "grey"
                 }
                 className="w-9 h-9 absolute bottom-0 right-0 rounded-full bg-white p-1 cursor-pointer"
@@ -105,14 +105,14 @@ export default function Character() {
             </div>
 
             <div className="flex flex-col border-b-2 py-3 mb-3">
-              <span className="font-medium">type</span>
+              <span className="font-medium">Type</span>
               <span className="font-extralight">
                 {data?.character.type || "none"}
               </span>
             </div>
 
             <div className="flex flex-col border-b-2 py-3 mb-3">
-              <span className="font-medium">gender</span>
+              <span className="font-medium">Gender</span>
               <span className="font-extralight">
                 {data?.character.gender || "none"}
               </span>

@@ -35,7 +35,7 @@ const Dropdown = () => {
     <div className="relative">
       <button
         onClick={toggleDropdown}
-        className="py-2 px-3 text-sm rounded-e-md  border-transparent text-purple-500 bg-slate-100"
+        className="py-2 px-3 text-sm rounded-e-md  border-transparent text-primary700 bg-gray-200"
         data-testid="toggleDropdown"
       >
         <svg
@@ -44,7 +44,7 @@ const Dropdown = () => {
           viewBox="0 0 24 24"
           strokeWidth={1.5}
           stroke="currentColor"
-          className="w-6 h-6"
+          className={`"w-6 h-6 " ${ isDropdownOpen ? "bg-primary100": "bg-none" }`}
         >
           <path
             strokeLinecap="round"
@@ -55,14 +55,14 @@ const Dropdown = () => {
       </button>
 
       {isDropdownOpen && (
-        <div data-testid="boxDropdown" className="absolute mt-2 right-0 w-80 p-4 bg-white border rounded-md shadow-lg">
+        <div data-testid="boxDropdown"  className="absolute mt-2 right-0 w-80 px-4 pt-2 bg-white border rounded-md shadow-lg ">
           <ButtonsFilter title="Characters" action={updateCharacterFilter} currentValue={characterFilter} options={["", "Starred", "Others"]} />
           <ButtonsFilter title="Species" action={updateSpecie} currentValue={specie} options={["", "Human", "Alien"]} />
           <ButtonsFilter title="Status" action={updateCurrentStatus} currentValue={currentStatus} options={["", "Alive", "Dead"]} />
           <ButtonsFilter title="Gender" action={updateCurrentGender} currentValue={currentGender} options={["", "Male", "Female"]} />
-          <div className="div py-4">
+          <div className="div px-1 py-2">
             <button
-              className="w-full rounded-md p-2 bg-slate-400 text-white"
+              className="w-full rounded-md p-2 bg-primary600 text-white font-light "
               onClick={clickFilter}
             >
               Filter
