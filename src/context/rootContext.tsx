@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Character, RootContextType } from '../@types/all';
+import { Character, RootContextType, listComment } from '../@types/all';
 
 export const RootContext = React.createContext<RootContextType | null>(null);
 
@@ -9,11 +9,10 @@ const RootProvider: React.FC<{children: React.ReactNode}> = ({ children }) => {
   const [search, setSearch] = React.useState<string>("");
   const [characterFilter, setCharacterFilter] = React.useState<string>("");
   const [listStarred, setListStarred] = React.useState<string[]>([])
-
   const [listCharactersFilter, setListCharactersFilter] = React.useState<Character[]>([])
+  const [listComments, setListComments] = React.useState<listComment[]>([])
 
   const updateCharacters = (characters: Character[]) => {
-
     const idsStarred = listCharacters.filter(item => item.starred && !listStarred.includes(item.id)).map(item => item.id)
     const setStarred =  [...listStarred,...idsStarred];
     setListStarred(setStarred);
@@ -101,6 +100,23 @@ const RootProvider: React.FC<{children: React.ReactNode}> = ({ children }) => {
     }));
   }
 
+  const updateComments = (comment: string, id: string) => {
+    if(id != ""){
+      const t = listComments.find(item => item.id === id);
+      if(t){
+        const response = listComments.map(item => {
+          if(item.id === id){
+            return {...item, comments: [...item.comments, comment]}
+          }else{
+            return item;
+          }
+        })
+        setListComments(response);
+      }else{
+        setListComments([...listComments, {id, comments: [comment]}]);
+      }
+    }
+  }
 
   return (
     <RootContext.Provider
@@ -115,7 +131,9 @@ const RootProvider: React.FC<{children: React.ReactNode}> = ({ children }) => {
         addStarred,
         updateCharacterFilter,
         filterCharacters,
-        listCharactersFilter
+        listCharactersFilter,
+        listComments,
+        updateComments
       }}
     >
       {children}

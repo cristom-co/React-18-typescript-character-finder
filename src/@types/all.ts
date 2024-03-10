@@ -13,6 +13,10 @@ export interface responseSearch {
     results: Character[]
 }
 
+export interface listComment {
+    id: string, comments: string[]
+}
+
 export type RootContextType = {
     listCharacters: Character[];
     specie: String;
@@ -24,5 +28,7 @@ export type RootContextType = {
     updateSearch: (search: string) => void;
     addStarred: (id: string) => void;
     updateCharacterFilter: (characterFilter: string) => void;
-    filterCharacters: () => void
+    filterCharacters: () => void;
+    listComments: listComment[] ;
+    updateComments: (comment: string, id: string) => void
 };

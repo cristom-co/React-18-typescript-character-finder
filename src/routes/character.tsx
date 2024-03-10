@@ -8,6 +8,8 @@ import { Character as typeCharacter } from "../@types/all";
 import { RootContext } from '../context/rootContext';
 import { RootContextType, } from '../@types/all';
 
+import ModalComments from "../components/ModalComments";
+
 export default function Character() {
   const { characterId } = useParams<{ characterId: string }>();
 
@@ -15,9 +17,10 @@ export default function Character() {
     variables: { characterId }
   });
 
-  const { listCharacters, addStarred} = React.useContext(RootContext) as RootContextType;
+  const { listCharacters, addStarred, listComments, updateComments} = React.useContext(RootContext) as RootContextType;
 
   const [starred, setStarred] = useState(false)
+  const [comment, setComment] = useState("")
 
   useEffect(() => {
     refetch();
@@ -27,6 +30,11 @@ export default function Character() {
     setStarred(!starred)
     if(data)
       addStarred(data?.character.id);
+  }
+
+  const clickComment = () => {
+      updateComments(comment, data?.character.id||""); 
+      setComment("")
   }
 
   {loading && <p>Loading...</p>}
@@ -43,10 +51,20 @@ export default function Character() {
           <svg
             onClick={clickStarred}
             xmlns="http://www.w3.org/2000/svg"
-            fill={listCharacters.find(item => item.id === data?.character.id)?.starred ? "green" : "none"}
+            fill={
+              listCharacters.find((item) => item.id === data?.character.id)
+                ?.starred
+                ? "green"
+                : "none"
+            }
             viewBox="0 0 24 24"
             strokeWidth={1.5}
-            stroke={listCharacters.find(item => item.id === data?.character.id)?.starred ? "green" : "grey"}
+            stroke={
+              listCharacters.find((item) => item.id === data?.character.id)
+                ?.starred
+                ? "green"
+                : "grey"
+            }
             className="w-9 h-9 absolute bottom-0 right-0 rounded-full bg-white p-1 cursor-pointer"
           >
             <path
@@ -90,11 +108,36 @@ export default function Character() {
         </div>
       </div>
       <div>
-        comments...
-        {/* <textarea></textarea>
-        <button> add comment</button> */}
+        <ModalComments>
+          <div className="flex flex-col">
+            <div className=" flex flex-row gap-2">
+              <textarea
+                className="block p-5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300"
+                placeholder="Write your thoughts here..."
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+              ></textarea>
+              <div className="self-center">
+                <svg
+                  onClick={clickComment}
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  className="w-9 h-9 p-2 bg-purple-400 rounded-full"
+                >
+                  <path d="M3.478 2.404a.75.75 0 0 0-.926.941l2.432 7.905H13.5a.75.75 0 0 1 0 1.5H4.984l-2.432 7.905a.75.75 0 0 0 .926.94 60.519 60.519 0 0 0 18.445-8.986.75.75 0 0 0 0-1.218A60.517 60.517 0 0 0 3.478 2.404Z" />
+                </svg>
+              </div>
+            </div>
+            <div className="p-4">
+              {listComments.find((item) => item.id === data?.character.id) &&
+                listComments
+                  .find((item) => item.id === data?.character.id)
+                  ?.comments.map((item) => <p>{item}</p>)}
+            </div>
+          </div>
+        </ModalComments>
       </div>
-      {/* <div>list comments</div> */}
     </div>
   );
 }
