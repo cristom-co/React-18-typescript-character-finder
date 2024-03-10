@@ -7,7 +7,9 @@ export const SEARCH_CHARACTERS = gql`
         name
         id
         image,
-        species
+        species,
+        status,
+        gender
       }
     }
   }

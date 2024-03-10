@@ -19,12 +19,12 @@ export interface listComment {
 
 export type RootContextType = {
     listCharacters: Character[];
-    specie: String;
+    specie: string;
     search: string;
     characterFilter:  string;
     listCharactersFilter: Character[];
     updateCharacters: (characters: Character[]) => void;
-    updateSpecie: (specie: String) => void;
+    updateSpecie: (specie: string) => void;
     updateSearch: (search: string) => void;
     addStarred: (id: string) => void;
     updateCharacterFilter: (characterFilter: string) => void;
@@ -33,4 +33,9 @@ export type RootContextType = {
     updateComments: (comment: string, id: string) => void;
     listSoftDelete: string[];
     updateListSoftDelete: (id: string) => void;
+
+    currentStatus: string;
+    updateCurrentStatus: (status: string) => void
+    currentGender: string;
+    updateCurrentGender: (status: string) => void
 };
