@@ -29,10 +29,11 @@ export default function Root() {
     updateOrderCharacters,
   } = React.useContext(RootContext) as RootContextType;
 
-  const handleSearch = () => {
+  const handleSearch = (searchTerm: string) => {
     searchCharacters({
-      variables: { searchTerm: search, specie },
+      variables: { searchTerm, specie },
     });
+    updateSearch(searchTerm);
   };
 
   useEffect(() => {
@@ -52,8 +53,7 @@ export default function Root() {
               <input
                 type="text"
                 value={search}
-                onChange={(e) => updateSearch(e.target.value)}
-                onBlur={handleSearch}
+                onChange={(e) => handleSearch(e.target.value)}
                 className="ps-11  w-full border-none rounded-s-lg text-sm bg-gray-200 text-gray-600 focus:outline-none focus:border-gray-500 focus:ring-0 "
                 placeholder="Search or filter results"
               />

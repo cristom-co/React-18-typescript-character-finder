@@ -47,67 +47,71 @@ export default function Character() {
   return (
     <>
       {listSoftDelete.find((item) => item === data?.character.id) ? (
-        <>
-          <h1>character deleted</h1>
-        </>
+        <div className="flex h-full w-full justify-center items-center">
+          <h1 className="text-gray-500 font-bold">CHARACTER DELETED</h1>
+        </div>
       ) : (
         <div className="px-16 flex flex-col ">
           <div className="pb-5 pt-5">
-            <div className="relative w-24">
-              <img
-                className="rounded-full w-24 mb-3"
-                src={data?.character.image}
-                alt={data?.character.name}
-              />
-              <svg
-                onClick={clickStarred}
-                xmlns="http://www.w3.org/2000/svg"
-                fill={
-                  listCharacters.find((item) => item.id === data?.character.id)
-                    ?.starred
-                    ? "#63D838"
-                    : "none"
-                }
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke={
-                  listCharacters.find((item) => item.id === data?.character.id)
-                    ?.starred
-                    ? "#63D838"
-                    : "grey"
-                }
-                className="w-9 h-9 absolute bottom-0 right-0 rounded-full bg-white p-1 cursor-pointer"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
+            {data?.character.image && (
+              <div className="relative w-24">
+                <img
+                  className="rounded-full w-20 mb-3"
+                  src={data?.character.image}
+                  alt={data?.character.name}
                 />
-              </svg>
-            </div>
+                <svg
+                  onClick={clickStarred}
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill={
+                    listCharacters.find(
+                      (item) => item.id === data?.character.id
+                    )?.starred
+                      ? "#63D838"
+                      : "none"
+                  }
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke={
+                    listCharacters.find(
+                      (item) => item.id === data?.character.id
+                    )?.starred
+                      ? "#63D838"
+                      : "grey"
+                  }
+                  className="w-9 h-9 absolute bottom-0 right-0 rounded-full bg-white p-1 cursor-pointer"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
+                  />
+                </svg>
+              </div>
+            )}
             <h1 className="text-2xl font-medium">
-              {data?.character.name || "none"}
+              {data?.character.name || ""}
             </h1>
           </div>
           <div className="">
             <div className="flex flex-col border-b-2 py-3 mb-3">
               <span className="font-medium">Specie</span>
               <span className="font-extralight">
-                {data?.character.species || "none"}
+                {data?.character.species || "---"}
               </span>
             </div>
 
             <div className="flex flex-col border-b-2 py-3 mb-3">
               <span className="font-medium">Status</span>
               <span className="font-extralight">
-                {data?.character.status || "none"}
+                {data?.character.status || "---"}
               </span>
             </div>
 
             <div className="flex flex-col border-b-2 py-3 mb-3">
               <span className="font-medium">Type</span>
               <span className="font-extralight">
-                {data?.character.type || "none"}
+                {data?.character.type || "---"}
               </span>
             </div>
 
@@ -136,24 +140,24 @@ export default function Character() {
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 24 24"
                         fill="currentColor"
-                        className="w-9 h-9 p-2 bg-purple-400 rounded-full"
+                        className="w-9 h-9 p-2 bg-secondary600 rounded-full cursor-pointer text-white"
                       >
                         <path d="M3.478 2.404a.75.75 0 0 0-.926.941l2.432 7.905H13.5a.75.75 0 0 1 0 1.5H4.984l-2.432 7.905a.75.75 0 0 0 .926.94 60.519 60.519 0 0 0 18.445-8.986.75.75 0 0 0 0-1.218A60.517 60.517 0 0 0 3.478 2.404Z" />
                       </svg>
                     </div>
                   </div>
-                  <div className="p-4">
+                  <div className="p-4 overflow-scroll max-h-60">
                     {listComments.find(
                       (item) => item.id === data?.character.id
                     ) &&
                       listComments
                         .find((item) => item.id === data?.character.id)
-                        ?.comments.map((item) => <p>{item}</p>)}
+                        ?.comments.map((item) => <p className="border-b-2 p-3 text-gray-600">{item}</p>)}
                   </div>
                 </div>
               </ModalComments>
               <button
-                className="bg-red-700 text-white px-4 rounded-md text-sm"
+                className="bg-primary700 text-white px-4 rounded-md text-sm"
                 onClick={clickSoftDelete}
               >
                 Soft-Delete
