@@ -12,11 +12,10 @@ const RootProvider: React.FC<{children: React.ReactNode}> = ({ children }) => {
   const [listCharactersFilter, setListCharactersFilter] = React.useState<Character[]>([])
   const [listComments, setListComments] = React.useState<listComment[]>([])
   const [listSoftDelete, setListSoftDelete] = React.useState<string[]>([])
-
   const [currentStatus, setCurrentStatus] = React.useState<string>("")
   const [currentGender, setCurrentGender] = React.useState<string>("")
-
   const [originalListCharacters, setOriginalListCharacters] =  React.useState<Character[]>([]);
+  const [flagOrder, setFlagOrder] = React.useState<boolean>(false);
 
   const updateCharacters = (characters: Character[]) => {
     const idsStarred = listCharacters.filter(item => item.starred && !listStarred.includes(item.id)).map(item => item.id)
@@ -178,6 +177,15 @@ const RootProvider: React.FC<{children: React.ReactNode}> = ({ children }) => {
     setCurrentStatus(status === currentStatus ? "" : status)
   }
 
+  const updateOrderCharacters = () => {
+    if(flagOrder){
+      setListCharacters( [...listCharacters].sort((a, b) => a.name.localeCompare(b.name)));
+    }else{
+      setListCharacters( [...listCharacters].sort((a, b) => b.name.localeCompare(a.name)));
+    }
+    setFlagOrder(!flagOrder)
+  }
+
   return (
     <RootContext.Provider
       value={{
@@ -199,7 +207,8 @@ const RootProvider: React.FC<{children: React.ReactNode}> = ({ children }) => {
         currentStatus,
         currentGender,
         updateCurrentGender,
-        updateCurrentStatus
+        updateCurrentStatus,
+        updateOrderCharacters
       }}
     >
       {children}

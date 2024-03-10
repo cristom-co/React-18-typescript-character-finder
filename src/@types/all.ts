@@ -37,5 +37,6 @@ export type RootContextType = {
     currentStatus: string;
     updateCurrentStatus: (status: string) => void
     currentGender: string;
-    updateCurrentGender: (status: string) => void
+    updateCurrentGender: (status: string) => void,
+    updateOrderCharacters: () => void
 };

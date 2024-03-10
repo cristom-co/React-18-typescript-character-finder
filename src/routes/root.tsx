@@ -18,7 +18,16 @@ export default function Root() {
     SEARCH_CHARACTERS as DocumentNode
   );
   
-  const { specie, listCharacters, updateCharacters, search, updateSearch , addStarred, listCharactersFilter} = React.useContext(RootContext) as RootContextType;
+  const {
+    specie,
+    listCharacters,
+    updateCharacters,
+    search,
+    updateSearch,
+    addStarred,
+    listCharactersFilter,
+    updateOrderCharacters,
+  } = React.useContext(RootContext) as RootContextType;
 
   const handleSearch = () => {
     searchCharacters({
@@ -121,7 +130,8 @@ export default function Root() {
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="currentColor"
-                  className="w-5 h-5"
+                  className="w-5 h-5 cursor-pointer"
+                  onClick={updateOrderCharacters}
                 >
                   <path
                     strokeLinecap="round"
