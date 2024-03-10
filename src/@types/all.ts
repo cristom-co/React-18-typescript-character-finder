@@ -30,5 +30,7 @@ export type RootContextType = {
     updateCharacterFilter: (characterFilter: string) => void;
     filterCharacters: () => void;
     listComments: listComment[] ;
-    updateComments: (comment: string, id: string) => void
+    updateComments: (comment: string, id: string) => void;
+    listSoftDelete: string[];
+    updateListSoftDelete: (id: string) => void;
 };

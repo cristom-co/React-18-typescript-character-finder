@@ -11,6 +11,7 @@ const RootProvider: React.FC<{children: React.ReactNode}> = ({ children }) => {
   const [listStarred, setListStarred] = React.useState<string[]>([])
   const [listCharactersFilter, setListCharactersFilter] = React.useState<Character[]>([])
   const [listComments, setListComments] = React.useState<listComment[]>([])
+  const [listSoftDelete, setListSoftDelete] = React.useState<string[]>([])
 
   const updateCharacters = (characters: Character[]) => {
     const idsStarred = listCharacters.filter(item => item.starred && !listStarred.includes(item.id)).map(item => item.id)
@@ -21,6 +22,10 @@ const RootProvider: React.FC<{children: React.ReactNode}> = ({ children }) => {
       ...item,
       starred: setStarred.includes(item.id) ? true: false
     }));
+
+    if(listSoftDelete.length > 0)
+      tmpList = tmpList.filter(item => !listSoftDelete.includes(item.id))
+
     
     switch (characterFilter) {
       case "Starred":
@@ -118,6 +123,11 @@ const RootProvider: React.FC<{children: React.ReactNode}> = ({ children }) => {
     }
   }
 
+  const updateListSoftDelete = (id: string) => {
+    setListSoftDelete([...listSoftDelete, id])
+    setListCharacters(listCharacters.filter(item => item.id != id))
+  }
+
   return (
     <RootContext.Provider
       value={{
@@ -133,7 +143,9 @@ const RootProvider: React.FC<{children: React.ReactNode}> = ({ children }) => {
         filterCharacters,
         listCharactersFilter,
         listComments,
-        updateComments
+        updateComments,
+        listSoftDelete,
+        updateListSoftDelete
       }}
     >
       {children}

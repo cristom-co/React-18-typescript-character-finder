@@ -13,10 +13,9 @@ const ModalComments: React.FC<{children: ReactNode}> = ({ children }) => {
 
   return (
     <div className="relative">
-      <button onClick={openModal} className="bg-blue-500 text-white px-4 py-2 rounded">
+      <button onClick={openModal} className="bg-blue-500 text-white px-4 py-2 rounded-md text-sm">
         Comments
       </button>
-
       {isOpen && (
         <div className="fixed inset-0 bg-gray-700 bg-opacity-50 flex items-center justify-center">
           <div className="bg-white p-8 rounded-lg w-1/2 h-2/3">
