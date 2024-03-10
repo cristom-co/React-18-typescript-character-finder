@@ -36,6 +36,7 @@ const Dropdown = () => {
       <button
         onClick={toggleDropdown}
         className="py-2 px-3 text-sm rounded-e-md  border-transparent text-purple-500 bg-slate-100"
+        data-testid="toggleDropdown"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -54,7 +55,7 @@ const Dropdown = () => {
       </button>
 
       {isDropdownOpen && (
-        <div className="absolute mt-2 right-0 w-80 p-4 bg-white border rounded-md shadow-lg">
+        <div data-testid="boxDropdown" className="absolute mt-2 right-0 w-80 p-4 bg-white border rounded-md shadow-lg">
           <ButtonsFilter title="Characters" action={updateCharacterFilter} currentValue={characterFilter} options={["", "Starred", "Others"]} />
           <ButtonsFilter title="Species" action={updateSpecie} currentValue={specie} options={["", "Human", "Alien"]} />
           <ButtonsFilter title="Status" action={updateCurrentStatus} currentValue={currentStatus} options={["", "Alive", "Dead"]} />

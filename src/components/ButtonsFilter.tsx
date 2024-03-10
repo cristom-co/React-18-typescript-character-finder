@@ -11,8 +11,9 @@ const ButtonsFilter:React.FC<butttonsFilterProps>  = ({ currentValue, action, op
       <div>
         <span>{title}</span>
         <div className="flex flex-row justify-between px-4 py-2 gap-2">
-          {options.map((item) => (
+          {options.map((item, index) => (
             <button
+              key={index}
               className={`p-3 rounded-md w-1/3 ${
                 currentValue === item ? "bg-purple-500" : "bg-white"
               }`}
