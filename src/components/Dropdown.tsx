@@ -55,7 +55,7 @@ const Dropdown = () => {
       </button>
 
       {isDropdownOpen && (
-        <div data-testid="boxDropdown"  className="absolute mt-2 right-0 w-80 px-4 pt-2 bg-white border rounded-md shadow-lg ">
+        <div data-testid="boxDropdown"  className="absolute mt-2 md:right-0 sm:right-[-16px] md:w-80 sm:w-screen px-4 pt-2 bg-white border rounded-md shadow-lg ">
           <ButtonsFilter title="Characters" action={updateCharacterFilter} currentValue={characterFilter} options={["", "Starred", "Others"]} />
           <ButtonsFilter title="Species" action={updateSpecie} currentValue={specie} options={["", "Human", "Alien"]} />
           <ButtonsFilter title="Status" action={updateCurrentStatus} currentValue={currentStatus} options={["", "Alive", "Dead"]} />

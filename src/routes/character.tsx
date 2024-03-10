@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useQuery } from '@apollo/client';
-import { useParams } from 'react-router-dom';
+import { useParams, NavLink } from 'react-router-dom';
 
 import { DETAIL_CHARACTER } from '../graphql/queries';
 import { Character as typeCharacter } from "../@types/all";
@@ -52,6 +52,12 @@ export default function Character() {
         </div>
       ) : (
         <div className="px-16 flex flex-col ">
+          <NavLink to={"/"}>
+            <svg  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" 
+              className="w-6 h-6 cursor-pointer md:hidden">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+            </svg>
+          </NavLink>
           <div className="pb-5 pt-5">
             {data?.character.image && (
               <div className="relative w-24">

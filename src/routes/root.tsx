@@ -1,6 +1,6 @@
 
 import React, { useEffect } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useParams } from "react-router-dom";
 
 import { DocumentNode, useLazyQuery } from '@apollo/client';
 import { SEARCH_CHARACTERS } from '../graphql/queries';
@@ -42,10 +42,12 @@ export default function Root() {
     }
   }, [loading])
 
+  const isDetailRoute = !!useParams().characterId 
+
     return (
       <>
-        <div className="grid grid-cols-4 lg:grid-cols-4 gap-0 h-screen">
-          <div className="bg-slate-50 p-4 overflow-scroll bg-gray-100">
+        <div className="grid grid-cols-4 gap-0 h-screen">
+          <div className={`" bg-slate-50 p-4 overflow-scroll bg-gray-100 "${isDetailRoute ? " sm:hidden md:block " : " sm:col-span-4 md:col-span-1 "}`}>
             <h1 className="text-xl font-medium py-6 px-2">
               Rick and Morty list
             </h1>
@@ -154,7 +156,7 @@ export default function Root() {
               </nav>
             )}
           </div>
-          <div className="col-span-3 lg:col-span-3 bg-white p-4">
+          <div className={`" md:col-span-3 bg-white p-4 "${isDetailRoute ? " sm:col-span-4  " : " sm:hidden md:block "}`}>
             <Outlet />
           </div>
         </div>

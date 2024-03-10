@@ -21,7 +21,7 @@ const ModalComments: React.FC<{children: ReactNode}> = ({ children }) => {
       </button>
       {isOpen && (
         <div className="fixed inset-0 bg-gray-700 bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white p-8 rounded-lg w-1/2 h-2/3">
+          <div className="bg-white p-8 rounded-lg md:w-1/2 md:h-2/3 sm:w-11/12 sm:h-2/3">
             <div className="flex border-b-2 mb-4 p-2 ">
               <h2 className="grow text-gray-500">Comments</h2>
               <button onClick={closeModal} className="text-gray-500 grow-0">
