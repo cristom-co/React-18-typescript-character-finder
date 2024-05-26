@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { Character, RootContextType, listComment } from '../@types/all';
+import { Character, RootContextType, listComment } from '../types/all';
 
 export const RootContext = React.createContext<RootContextType | null>(null);
 
 const RootProvider: React.FC<{children: React.ReactNode}> = ({ children }) => {
+  //TODO: Refactor
   const [specie, setSpecie] = React.useState<string>("");
   const [listCharacters, setListCharacters] = React.useState<Character[]>([]);
   const [search, setSearch] = React.useState<string>("");

@@ -1,51 +1,66 @@
 import React, { useEffect, useState } from "react";
-import { useQuery } from '@apollo/client';
-import { useParams, NavLink } from 'react-router-dom';
+//Apollo client
+import { useQuery } from "@apollo/client";
+import { DETAIL_CHARACTER } from "../graphql/queries";
 
-import { DETAIL_CHARACTER } from '../graphql/queries';
-import { Character as typeCharacter } from "../@types/all";
+//Router
+import { useParams, NavLink } from "react-router-dom";
 
-import { RootContext } from '../context/rootContext';
-import { RootContextType, } from '../@types/all';
+//types
+import { Character as typeCharacter, RootContextType } from "../types/all";
 
+//context
+import { RootContext } from "../context/rootContext";
+
+//components
 import ModalComments from "../components/ModalComments";
+
+//Svg
+import { LoveSvg , ArrowRight, ArrowLeft } from "../components/SvgIcons"
 
 export default function Character() {
   const { characterId } = useParams<{ characterId: string }>();
 
-  const { loading, data, refetch } = useQuery<{ character: typeCharacter }>(DETAIL_CHARACTER,{
-    variables: { characterId }
-  });
+  const { loading, data, refetch } = useQuery<{ character: typeCharacter }>(
+    DETAIL_CHARACTER,
+    {
+      variables: { characterId },
+    }
+  );
 
-  const { listCharacters, addStarred, listComments, updateComments, updateListSoftDelete, listSoftDelete} = React.useContext(RootContext) as RootContextType;
+  const {
+    listCharacters,
+    addStarred,
+    listComments,
+    updateComments,
+    updateListSoftDelete,
+    listSoftDelete,
+  } = React.useContext(RootContext) as RootContextType;
 
-  const [starred, setStarred] = useState(false)
-  const [comment, setComment] = useState("")
+  const [starred, setStarred] = useState(false);
+  const [comment, setComment] = useState("");
 
   useEffect(() => {
     refetch();
-  }, [refetch]);
+  }, []);
 
   const clickStarred = () => {
-    setStarred(!starred)
-    if(data)
-      addStarred(data?.character.id);
-  }
+    setStarred(!starred);
+    if (data) addStarred(data?.character.id);
+  };
 
   const clickComment = () => {
-      updateComments(comment, data?.character.id||""); 
-      setComment("")
-  }
+    updateComments(comment, data?.character.id || "");
+    setComment("");
+  };
 
   const clickSoftDelete = () => {
-    if(data)
-      updateListSoftDelete(data?.character.id)
-  }
-
-  {loading && <p>Loading...</p>}
+    if (data) updateListSoftDelete(data?.character.id);
+  };
 
   return (
     <>
+      {loading && <p>Loading...</p>}
       {listSoftDelete.find((item) => item === data?.character.id) ? (
         <div className="flex h-full w-full justify-center items-center">
           <h1 className="text-gray-500 font-bold">CHARACTER DELETED</h1>
@@ -53,10 +68,7 @@ export default function Character() {
       ) : (
         <div className="px-16 flex flex-col ">
           <NavLink to={"/"}>
-            <svg  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" 
-              className="w-6 h-6 cursor-pointer md:hidden">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
-            </svg>
+            <ArrowLeft />
           </NavLink>
           <div className="pb-5 pt-5">
             {data?.character.image && (
@@ -66,33 +78,9 @@ export default function Character() {
                   src={data?.character.image}
                   alt={data?.character.name}
                 />
-                <svg
-                  onClick={clickStarred}
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill={
-                    listCharacters.find(
-                      (item) => item.id === data?.character.id
-                    )?.starred
-                      ? "#63D838"
-                      : "none"
-                  }
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke={
-                    listCharacters.find(
-                      (item) => item.id === data?.character.id
-                    )?.starred
-                      ? "#63D838"
-                      : "grey"
-                  }
-                  className="w-9 h-9 absolute bottom-0 right-0 rounded-full bg-white p-1 cursor-pointer"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
-                  />
-                </svg>
+                <div onClick={clickStarred}>
+                  <LoveSvg  listCharacters={listCharacters} id={data?.character.id} />
+                </div>
               </div>
             )}
             <h1 className="text-2xl font-medium">
@@ -140,16 +128,8 @@ export default function Character() {
                       value={comment}
                       onChange={(e) => setComment(e.target.value)}
                     ></textarea>
-                    <div className="self-center">
-                      <svg
-                        onClick={clickComment}
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                        className="w-9 h-9 p-2 bg-secondary600 rounded-full cursor-pointer text-white"
-                      >
-                        <path d="M3.478 2.404a.75.75 0 0 0-.926.941l2.432 7.905H13.5a.75.75 0 0 1 0 1.5H4.984l-2.432 7.905a.75.75 0 0 0 .926.94 60.519 60.519 0 0 0 18.445-8.986.75.75 0 0 0 0-1.218A60.517 60.517 0 0 0 3.478 2.404Z" />
-                      </svg>
+                    <div className="self-center" onClick={clickComment}>
+                      <ArrowRight />
                     </div>
                   </div>
                   <div className="p-4 overflow-scroll max-h-60">
@@ -158,7 +138,9 @@ export default function Character() {
                     ) &&
                       listComments
                         .find((item) => item.id === data?.character.id)
-                        ?.comments.map((item) => <p className="border-b-2 p-3 text-gray-600">{item}</p>)}
+                        ?.comments.map((item) => (
+                          <p className="border-b-2 p-3 text-gray-600">{item}</p>
+                        ))}
                   </div>
                 </div>
               </ModalComments>
@@ -175,4 +157,3 @@ export default function Character() {
     </>
   );
 }
-

@@ -1,6 +1,8 @@
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode, useState } from "react";
 
-const ModalComments: React.FC<{children: ReactNode}> = ({ children }) => {
+import { ArrowDown } from "../components/SvgIcons";
+
+const ModalComments: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const openModal = () => {
@@ -25,20 +27,7 @@ const ModalComments: React.FC<{children: ReactNode}> = ({ children }) => {
             <div className="flex border-b-2 mb-4 p-2 ">
               <h2 className="grow text-gray-500">Comments</h2>
               <button onClick={closeModal} className="text-gray-500 grow-0">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  className="w-5 h-5"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M6 18 18 6M6 6l12 12"
-                  />
-                </svg>
+                <ArrowDown />
               </button>
             </div>
             {children}

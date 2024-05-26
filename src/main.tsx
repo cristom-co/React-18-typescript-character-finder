@@ -1,45 +1,26 @@
-import * as React from 'react';
-import ReactDOM from 'react-dom/client'
+import * as React from "react";
+import ReactDOM from "react-dom/client";
 
-import Root from './routes/root'
-import ErrorPage from "./error-page";
-import Character from './routes/character';
+//css modules
+import "./index.css";
 
-import './index.css'
+// context API
+import RootProvider from "./context/rootContext";
 
-import RootProvider  from './context/rootContext';
+//Apollo Client
+import { ApolloProvider } from "@apollo/client";
+import ApolloClient from "./graphql/ApolloClient";
 
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom"
+// Router
+import { RouterProvider } from "react-router-dom";
+import AppRouter from "./routes/AppRouter";
 
-const client = new ApolloClient({
-  uri: 'https://rickandmortyapi.com/graphql',
-  cache: new InMemoryCache(),
-});
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Root />,
-    errorElement: <ErrorPage />,
-    children: [
-      {
-        path: "character/:characterId",
-        element: <Character />,
-      },
-    ],
-  }
-]);
-
-ReactDOM.createRoot(document.getElementById('root')!).render(
+ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-      <ApolloProvider client={client}>
-        <RootProvider>
-          <RouterProvider router={router} />
-        </RootProvider>
-      </ApolloProvider>
-  </React.StrictMode>,
-)
+    <ApolloProvider client={ApolloClient}>
+      <RootProvider>
+        <RouterProvider router={AppRouter} />
+      </RootProvider>
+    </ApolloProvider>
+  </React.StrictMode>
+);
