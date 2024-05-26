@@ -28,6 +28,7 @@ export default function Character() {
     }
   );
 
+  // TODO: move to zustand
   const {
     listCharacters,
     addStarred,

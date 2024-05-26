@@ -14,6 +14,7 @@ const Dropdown = () => {
     setDropdownOpen(!isDropdownOpen);
   };
 
+  // TODO: move to zustand
   const {
     updateSpecie,
     specie,

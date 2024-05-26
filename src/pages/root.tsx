@@ -8,47 +8,54 @@ import { SEARCH_CHARACTERS } from "../graphql/queries";
 //types
 import { responseSearch } from "../types/all";
 
-//context
-import { RootContext } from "../context/rootContext";
-import { RootContextType } from "../types/all";
-
 //components
 import Dropdown from "../components/Dropdown";
 import ListCharacters from "../components/ListCharacters";
 
 //svg
-import {SearchSvg, OrderSvg} from "../components/SvgIcons";
+import { SearchSvg, OrderSvg } from "../components/SvgIcons";
+
+//Store
+import useRootStore from "../context/store";
 
 export default function Root() {
+  const isDetailRoute = !!useParams().characterId;
+  
   const [searchCharacters, { loading, data }] = useLazyQuery<{
     searchResults: responseSearch;
   }>(SEARCH_CHARACTERS as DocumentNode);
 
   const {
-    specie,
-    listCharacters,
-    updateCharacters,
-    search,
-    updateSearch,
-    addStarred,
-    listCharactersFilter,
-    updateOrderCharacters,
-  } = React.useContext(RootContext) as RootContextType;
+    listCharactersz,
+    updateCharactersz,
+    speciez,
+    searchz,
+    updateSearchz,
+    addStarredz,
+    updateOrderCharactersz
+  } = useRootStore();
+
+  const [flagOrder, setFlagOrder] = React.useState(false)
+
+  const handleOrder = () => {
+    updateOrderCharactersz(flagOrder);
+    setFlagOrder(!flagOrder)
+  }
 
   const handleSearch = (searchTerm: string) => {
     searchCharacters({
-      variables: { searchTerm, specie },
+      variables: { searchTerm, specie: speciez },
     });
-    updateSearch(searchTerm);
+    updateSearchz(searchTerm);
   };
 
   useEffect(() => {
     if (!loading && data) {
-      updateCharacters(data.searchResults.results);
+      updateCharactersz(data.searchResults.results);
     }
   }, [loading]);
 
-  const isDetailRoute = !!useParams().characterId;
+
 
   return (
     <>
@@ -64,7 +71,7 @@ export default function Root() {
           <div className="relative flex">
             <input
               type="text"
-              value={search}
+              value={searchz}
               onChange={(e) => handleSearch(e.target.value)}
               className="ps-11  w-full border-none rounded-s-lg text-sm bg-gray-200 text-gray-600 focus:outline-none focus:border-gray-500 focus:ring-0 "
               placeholder="Search or filter results"
@@ -75,67 +82,29 @@ export default function Root() {
             <Dropdown />
           </div>
 
-          {listCharacters.filter((item) => item.starred).length > 0 && (
-            <h2 className="text-sm pb-6 pt-5 px-4 text-gray-600">
-              STARRED CHARACTERS (
-              {listCharacters.filter((item) => item.starred).length})
-            </h2>
-          )}
-
-          {listCharacters && (
-            <nav className="pb-7">
-              <ul className="flex flex-col">
-                {listCharacters
-                  .filter((item) => item.starred)
-                  .map((result, index) => (
-                    <ListCharacters key={index} result={result} addStarred={addStarred} />
-                  ))}
-              </ul>
-            </nav>
-          )}
-
-          {listCharactersFilter.length > 0 && (
+          {listCharactersz.length > 0 && (
             <>
-              <div className="flex flex-row justify-between px-4 pb-2">
-                <span className="text-blue-900">
-                  {listCharactersFilter.length + listCharacters.length} Results
-                </span>
-                <span className="bg-secondary600 bg-opacity-50 px-2 rounded-3xl text-sm text-gray-600">
-                  {listCharactersFilter.length} Filter
-                </span>
+              <div className="flex flex-row justify-between pr-5 mt-8">
+                <h2 className="text-sm pb-6 pt-0 px-4 text-gray-600">
+                  CHARACTERS
+                </h2>
+                <div onClick={handleOrder}>
+                  <OrderSvg />
+                </div>
               </div>
               <nav>
-                <ul className="flex flex-col pb-6">
-                  {listCharactersFilter.map((result, index) => (
-                    <ListCharacters key={index} result={result} addStarred={addStarred} />
-                  ))}
+                <ul className="flex flex-col gap-2">
+                  {listCharactersz
+                    .map((result, index) => (
+                      <ListCharacters
+                        key={index}
+                        result={result}
+                        addStarred={addStarredz}
+                      />
+                    ))}
                 </ul>
               </nav>
             </>
-          )}
-
-          {listCharacters.length > 0 && (
-            <div className="flex flex-row justify-between pr-5">
-              <h2 className="text-sm pb-6 pt-0 px-4 text-gray-600">
-                CHARACTERS (
-                {listCharacters.filter((item) => !item.starred).length})
-              </h2>
-              <div onClick={updateOrderCharacters}>
-                <OrderSvg />
-              </div>
-            </div>
-          )}
-
-          {listCharacters && (
-            <nav>
-              <ul className="flex flex-col gap-2">
-                {listCharacters
-                  .filter((item) => !item.starred)
-                  .map((result, index) => (
-                    <ListCharacters key={index} result={result} addStarred={addStarred} />
-                  ))}
-              </ul>
-            </nav>
           )}
         </div>
         <div
