@@ -1,4 +1,3 @@
-import { renderToStaticMarkup } from "react-dom/server";
 import { Character } from "../types/all";
 import React from "react";
 
