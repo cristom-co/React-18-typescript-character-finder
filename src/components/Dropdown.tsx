@@ -1,11 +1,11 @@
-import { useState, useContext } from "react";
-
-import { RootContext } from "../context/rootContext";
-import { RootContextType } from "../types/all";
+import { useState } from "react";
 
 import ButtonsFilter from "./ButtonsFilter";
 
 import { FilterSvg } from "../components/SvgIcons";
+
+//store
+import useRootStore from "../store/store";
 
 const Dropdown = () => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
@@ -14,21 +14,10 @@ const Dropdown = () => {
     setDropdownOpen(!isDropdownOpen);
   };
 
-  // TODO: move to zustand
-  const {
-    updateSpecie,
-    specie,
-    updateCharacterFilter,
-    characterFilter,
-    filterCharacters,
-    currentGender,
-    updateCurrentGender,
-    currentStatus,
-    updateCurrentStatus,
-  } = useContext(RootContext) as RootContextType;
+  const { filter, updateFilter, filterCharactersz } = useRootStore();
 
   const clickFilter = () => {
-    filterCharacters();
+    filterCharactersz();
     setTimeout(() => {
       toggleDropdown();
     }, 200);
@@ -51,27 +40,27 @@ const Dropdown = () => {
         >
           <ButtonsFilter
             title="Characters"
-            action={updateCharacterFilter}
-            currentValue={characterFilter}
-            options={["", "Starred", "Others"]}
+            action={(value) => updateFilter("character", value)}
+            currentValue={filter.character.selected}
+            options={filter.character.options}
           />
           <ButtonsFilter
             title="Species"
-            action={updateSpecie}
-            currentValue={specie}
-            options={["", "Human", "Alien"]}
+            action={(value) => updateFilter("species", value)}
+            currentValue={filter.species.selected}
+            options={filter.species.options}
           />
           <ButtonsFilter
             title="Status"
-            action={updateCurrentStatus}
-            currentValue={currentStatus}
-            options={["", "Alive", "Dead"]}
+            action={(value) => updateFilter("status", value)}
+            currentValue={filter.status.selected}
+            options={filter.status.options}
           />
           <ButtonsFilter
             title="Gender"
-            action={updateCurrentGender}
-            currentValue={currentGender}
-            options={["", "Male", "Female"]}
+            action={(value) => updateFilter("gender", value)}
+            currentValue={filter.gender.selected}
+            options={filter.gender.options}
           />
           <div className="div px-1 py-2">
             <button

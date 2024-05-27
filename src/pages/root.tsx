@@ -16,11 +16,11 @@ import ListCharacters from "../components/ListCharacters";
 import { SearchSvg, OrderSvg } from "../components/SvgIcons";
 
 //Store
-import useRootStore from "../context/store";
+import useRootStore from "../store/store";
 
 export default function Root() {
   const isDetailRoute = !!useParams().characterId;
-  
+
   const [searchCharacters, { loading, data }] = useLazyQuery<{
     searchResults: responseSearch;
   }>(SEARCH_CHARACTERS as DocumentNode);
@@ -32,15 +32,15 @@ export default function Root() {
     searchz,
     updateSearchz,
     addStarredz,
-    updateOrderCharactersz
+    updateOrderCharactersz,
   } = useRootStore();
 
-  const [flagOrder, setFlagOrder] = React.useState(false)
+  const [flagOrder, setFlagOrder] = React.useState(false);
 
   const handleOrder = () => {
     updateOrderCharactersz(flagOrder);
-    setFlagOrder(!flagOrder)
-  }
+    setFlagOrder(!flagOrder);
+  };
 
   const handleSearch = (searchTerm: string) => {
     searchCharacters({
@@ -55,8 +55,6 @@ export default function Root() {
     }
   }, [loading]);
 
-
-
   return (
     <>
       <div className="grid grid-cols-4 gap-0 h-screen">
@@ -67,7 +65,7 @@ export default function Root() {
               : " sm:col-span-4 md:col-span-1 "
           }`}
         >
-          <h1 className="text-xl font-medium py-6 px-2">Rick and Morty list</h1>
+          <h1 className="text-2xl font-bold py-6 px-2">Rick and Morty list</h1>
           <div className="relative flex">
             <input
               type="text"
@@ -94,14 +92,13 @@ export default function Root() {
               </div>
               <nav>
                 <ul className="flex flex-col gap-2">
-                  {listCharactersz
-                    .map((result, index) => (
-                      <ListCharacters
-                        key={index}
-                        result={result}
-                        addStarred={addStarredz}
-                      />
-                    ))}
+                  {listCharactersz.map((result, index) => (
+                    <ListCharacters
+                      key={index}
+                      result={result}
+                      addStarred={addStarredz}
+                    />
+                  ))}
                 </ul>
               </nav>
             </>

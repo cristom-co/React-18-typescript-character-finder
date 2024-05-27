@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 //Apollo client
 import { useQuery } from "@apollo/client";
 import { DETAIL_CHARACTER } from "../graphql/queries";
@@ -7,16 +7,16 @@ import { DETAIL_CHARACTER } from "../graphql/queries";
 import { useParams, NavLink } from "react-router-dom";
 
 //types
-import { Character as typeCharacter, RootContextType } from "../types/all";
-
-//context
-import { RootContext } from "../context/rootContext";
+import { Character as typeCharacter } from "../types/all";
 
 //components
 import ModalComments from "../components/ModalComments";
 
 //Svg
-import { LoveSvg , ArrowRight, ArrowLeft } from "../components/SvgIcons"
+import { LoveSvg, ArrowRight, ArrowLeft } from "../components/SvgIcons";
+
+//store
+import useRootStore from "../store/store";
 
 export default function Character() {
   const { characterId } = useParams<{ characterId: string }>();
@@ -28,15 +28,14 @@ export default function Character() {
     }
   );
 
-  // TODO: move to zustand
   const {
-    listCharacters,
-    addStarred,
-    listComments,
-    updateComments,
-    updateListSoftDelete,
-    listSoftDelete,
-  } = React.useContext(RootContext) as RootContextType;
+    listCharactersz,
+    addStarredz,
+    listCommentsz,
+    updateCommentsz,
+    updateListSoftDeletez,
+    listSoftDeletez,
+  } = useRootStore();
 
   const [starred, setStarred] = useState(false);
   const [comment, setComment] = useState("");
@@ -47,22 +46,22 @@ export default function Character() {
 
   const clickStarred = () => {
     setStarred(!starred);
-    if (data) addStarred(data?.character.id);
+    if (data) addStarredz(data?.character.id);
   };
 
   const clickComment = () => {
-    updateComments(comment, data?.character.id || "");
+    updateCommentsz(comment, data?.character.id || "");
     setComment("");
   };
 
   const clickSoftDelete = () => {
-    if (data) updateListSoftDelete(data?.character.id);
+    if (data) updateListSoftDeletez(data?.character.id);
   };
 
   return (
     <>
       {loading && <p>Loading...</p>}
-      {listSoftDelete.find((item) => item === data?.character.id) ? (
+      {listSoftDeletez.find((item) => item === data?.character.id) ? (
         <div className="flex h-full w-full justify-center items-center">
           <h1 className="text-gray-500 font-bold">CHARACTER DELETED</h1>
         </div>
@@ -80,7 +79,10 @@ export default function Character() {
                   alt={data?.character.name}
                 />
                 <div onClick={clickStarred}>
-                  <LoveSvg  listCharacters={listCharacters} id={data?.character.id} />
+                  <LoveSvg
+                    listCharacters={listCharactersz}
+                    id={data?.character.id}
+                  />
                 </div>
               </div>
             )}
@@ -134,10 +136,10 @@ export default function Character() {
                     </div>
                   </div>
                   <div className="p-4 overflow-scroll max-h-60">
-                    {listComments.find(
+                    {listCommentsz.find(
                       (item) => item.id === data?.character.id
                     ) &&
-                      listComments
+                      listCommentsz
                         .find((item) => item.id === data?.character.id)
                         ?.comments.map((item) => (
                           <p className="border-b-2 p-3 text-gray-600">{item}</p>
