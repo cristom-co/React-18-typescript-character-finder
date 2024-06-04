@@ -4,7 +4,7 @@ import { userEvent } from "@testing-library/user-event";
 import ModalComments from "../../src/components/ModalComments";
 
 describe("ModalComments", () => {
-  it("should render modalComment component", async () =>  {
+  it("should show modal's content ", async () =>  {
 
     const text = "Hello world!"
     render(
