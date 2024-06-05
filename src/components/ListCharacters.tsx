@@ -11,6 +11,7 @@ interface listCharactersProps {
 
 const ListCharacters: React.FC<listCharactersProps> = (props) => {
   let { characterId } = useParams();
+
   return (
     <li
       key={props.result.id}
@@ -18,6 +19,7 @@ const ListCharacters: React.FC<listCharactersProps> = (props) => {
         characterId == props.result.id ? "bg-primary100" : "bg-transparent"
       }`}
     >
+      {characterId}
       <div className="grow">
         <NavLink to={`character/${props.result.id}`}>
           <div className="flex flex-row gap-4">
