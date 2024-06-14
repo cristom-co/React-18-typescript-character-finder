@@ -16,3 +16,10 @@ export interface responseSearch {
 export interface listComment {
     id: string, comments: string[]
 }
+
+export interface butttonsFilterProps {
+    currentValue: string;
+    action: (id: string) => void;
+    options: string[];
+    title: string
+  }
