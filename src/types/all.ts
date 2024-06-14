@@ -23,3 +23,14 @@ export interface butttonsFilterProps {
     options: string[];
     title: string
   }
+
+export interface listCharactersProps {
+    result: Character;
+    addStarred: (id: string) => void;
+  }
+  
+export interface dataProps {
+    data: {
+        character: Character
+    }
+}

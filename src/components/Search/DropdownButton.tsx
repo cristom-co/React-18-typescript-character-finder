@@ -1,6 +1,6 @@
-import { butttonsFilterProps } from "../types/all";
+import { butttonsFilterProps } from "../../types/all";
 
-const ButtonsFilter: React.FC<butttonsFilterProps> = ({
+const DropdowButton: React.FC<butttonsFilterProps> = ({
   currentValue,
   action,
   options,
@@ -28,4 +28,4 @@ const ButtonsFilter: React.FC<butttonsFilterProps> = ({
   );
 };
 
-export default ButtonsFilter;
+export default DropdowButton;

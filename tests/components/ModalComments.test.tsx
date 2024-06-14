@@ -1,16 +1,16 @@
 import { render, screen } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
 
-import ModalComments from "../../src/components/ModalComments";
+import Modal from "../../src/components/Modal/Modal";
 
-describe("ModalComments", () => {
+describe("Modal", () => {
   it("should show modal's content ", async () =>  {
 
     const text = "Hello world!"
     render(
-      <ModalComments>
+      <Modal title="comments">
         <span>{text}</span>
-      </ModalComments>
+      </Modal>
     );
 
     const button = screen.getByRole("button", { name: /comments/i });

@@ -1,15 +1,8 @@
-import { Character } from "../types/all";
-
 import { NavLink, useParams } from "react-router-dom";
+import { LoveSvg2 } from "../SvgIcons";
+import { listCharactersProps } from "../../types/all";
 
-import { LoveSvg2 } from "../components/SvgIcons";
-
-interface listCharactersProps {
-  result: Character;
-  addStarred: (id: string) => void;
-}
-
-const ListCharacters: React.FC<listCharactersProps> = (props) => {
+const CharacterItem: React.FC<listCharactersProps> = (props) => {
   let { characterId } = useParams();
 
   return (
@@ -44,7 +37,7 @@ const ListCharacters: React.FC<listCharactersProps> = (props) => {
       >
         <LoveSvg2
           starred={props.result.starred}
-          characterId={characterId||""}
+          characterId={characterId || ""}
           id={props.result.id}
         />
       </div>
@@ -52,4 +45,4 @@ const ListCharacters: React.FC<listCharactersProps> = (props) => {
   );
 };
 
-export default ListCharacters;
+export default CharacterItem;

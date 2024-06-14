@@ -1,16 +1,16 @@
 import { render, screen } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
 
-import Dropdown from "../../src/components/Dropdown";
+import SearchDropdown from "../../src/components/Search/SearchDropdown";
 
-describe("Dropdown component", () => {
+describe("SearchDropdown component", () => {
   it("should render Dropdown component", () => {
-    render(<Dropdown />);
+    render(<SearchDropdown />);
     expect(screen.getByRole("button")).toBeInTheDocument();
   });
 
   it("should show the dropdown content when it's clicked", async () => {
-    render(<Dropdown />);
+    render(<SearchDropdown />);
 
     const user = userEvent.setup();
     const button = screen.getByRole('button')

@@ -1,10 +1,10 @@
 import { render, screen } from "@testing-library/react";
 import { vi } from "vitest";
 
-import ButtonsFilter from "../../src/components/ButtonsFilter";
+import DropdownButton from "../../src/components/Search/DropdownButton";
 import { butttonsFilterProps } from "../../src/types/all";
 
-describe("ButtonsFilters component", () => {
+describe("DropdownButton component", () => {
   it("should render component", () => {
     const props: butttonsFilterProps = {
       currentValue: "option 2",
@@ -13,7 +13,7 @@ describe("ButtonsFilters component", () => {
       title: "title",
     };
 
-    render(<ButtonsFilter {...props} />);
+    render(<DropdownButton {...props} />);
     const buttons = screen.getAllByRole("button");
 
     expect(buttons.length).toBe(3);

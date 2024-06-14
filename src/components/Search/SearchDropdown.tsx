@@ -1,13 +1,9 @@
 import { useState } from "react";
+import DropdownButton from "./DropdownButton";
+import { FilterSvg } from "../SvgIcons";
+import useRootStore from "../../store/store";
 
-import ButtonsFilter from "./ButtonsFilter";
-
-import { FilterSvg } from "../components/SvgIcons";
-
-//store
-import useRootStore from "../store/store";
-
-const Dropdown = () => {
+const SearchDropdown = () => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
 
   const toggleDropdown = () => {
@@ -38,25 +34,25 @@ const Dropdown = () => {
           data-testid="boxDropdown"
           className="absolute mt-2 md:right-0 sm:right-[-16px] md:w-80 sm:w-screen px-4 pt-2 bg-white border rounded-md shadow-lg "
         >
-          <ButtonsFilter
+          <DropdownButton
             title="Characters"
             action={(value) => updateFilter("character", value)}
             currentValue={filter.character.selected}
             options={filter.character.options}
           />
-          <ButtonsFilter
+          <DropdownButton
             title="Species"
             action={(value) => updateFilter("species", value)}
             currentValue={filter.species.selected}
             options={filter.species.options}
           />
-          <ButtonsFilter
+          <DropdownButton
             title="Status"
             action={(value) => updateFilter("status", value)}
             currentValue={filter.status.selected}
             options={filter.status.options}
           />
-          <ButtonsFilter
+          <DropdownButton
             title="Gender"
             action={(value) => updateFilter("gender", value)}
             currentValue={filter.gender.selected}
@@ -76,4 +72,4 @@ const Dropdown = () => {
   );
 };
 
-export default Dropdown;
+export default SearchDropdown;

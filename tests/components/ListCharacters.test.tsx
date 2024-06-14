@@ -3,16 +3,16 @@ import { vi } from "vitest";
 
 import renderWithRouter from "../renderWithRouter";
 import { characterData } from "../mockData";
-import ListCharacters from "../../src/components/ListCharacters";
+import CharacterItem from "../../src/components/Character/CharacterItem";
 
-describe("ListCharacters component", () => {
+describe("CharacterItem component", () => {
   const propsListCharacters = {
     result: characterData,
     addStarred: vi.fn(),
   };
 
   it("should show the details of the character and painted background", () => {
-    renderWithRouter(<ListCharacters {...propsListCharacters} />, {
+    renderWithRouter(<CharacterItem {...propsListCharacters} />, {
       route: "/character/1",
     });
 
@@ -22,7 +22,7 @@ describe("ListCharacters component", () => {
   });
 
   it("should show unselected items with transparent background  ", () => {
-    renderWithRouter(<ListCharacters {...propsListCharacters} />, {
+    renderWithRouter(<CharacterItem {...propsListCharacters} />, {
       route: "/character/2",
     });
 
@@ -34,7 +34,7 @@ describe("ListCharacters component", () => {
       ...propsListCharacters.result,
       name: "a".repeat(17)
     }}
-    renderWithRouter(<ListCharacters {...propsModified} />, {
+    renderWithRouter(<CharacterItem {...propsModified} />, {
       route: "/character/1",
     });
 
