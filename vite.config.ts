@@ -5,6 +5,16 @@ import { configDefaults } from 'vitest/config'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  
+  server: {
+		watch: {
+			usePolling: true,
+		},
+		host: true,
+		strictPort: true,
+		port: 5002,
+	},
+
   test: {
     // 👋 add the line below to add jsdom to vite
     environment: "jsdom",

@@ -18,8 +18,8 @@
 
 List of tools required to run the project:
 
+- [Node](https://nodejs.org/en/download/package-manager/current)
 - [Docker](https://docs.docker.com/get-docker/)
-- [Docker Compose](https://docs.docker.com/compose/install/)
 
 ## Installation
 
@@ -32,9 +32,28 @@ git clone https://github.com/cristom-co/React-18-typescript-character-finder.git
 cd React-18-typescript-character-finder
 ```
 
-### 2. Build and run the containers
+### Build and run with (Docker + hot reload)
 ```bash
-docker-compose up --build
+sudo docker compose up -d
+```
+
+### Run without Docker
+```bash
+npm install
+npm run dev
+```
+
+## Testing
+
+
+### Run unit test
+```bash
+npm run test:ui
+```
+
+### Run coverage
+```bash
+npm run coverage
 ```
 
 ## Screenshots
